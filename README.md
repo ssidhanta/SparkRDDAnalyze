@@ -15,3 +15,14 @@ The parameters <logfilename1> <logfilename2> <sparkinputfile1> <sparkinputfile2>
 
 The Spark home directory path needs to be set in the project first in the file SparkRDDAnalyze.java.
 
+The CADP_HOME path needs to be set in the file runbisim.sh.
+
+PRE-REQUISTES:
+spark-2.2.1 or higher #The tool has been tested with spark-2.2.1
+CADP #Can be downloaded and installed from http://cadp.inria.fr
+maven
+gcc
+jdk
+
+
+
