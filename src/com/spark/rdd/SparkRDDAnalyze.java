@@ -41,24 +41,34 @@ public class SparkRDDAnalyze {
             BufferedWriter writer = null;
             List<String> states = new ArrayList();
             while ((line = br.readLine()) != null){// &&  !"".equalsIgnoreCase(line.trim()) && line.trim().toUpperCase().contains("RDD")) {
-                if(line.contains("*****Subhajit Sidhanta todebugstring:"))
+                if(line.contains("RDD"))//"*****Subhajit Sidhanta todebugstring:"))
                 {    
-                    if(flag)
+                    
+                    if(!flag)
                     {
                         //str = str + line.split("\\*\\*\\*\\*\\*Subhajit Sidhanta todebugstring:")[0];
-                        break; 
+                        if(line.contains("*****Subhajit Sidhanta todebugstring:"))
+                            states.add(line.split("Subhajit Sidhanta todebugstring:")[1]);
+                        else
+                            states.add(line);
+                        flag = true; 
                     }
                     else// if (line.trim().toUpperCase().contains("RDD"))
                     {
                         //str = line.split("Subhajit Sidhanta todebugstring:")[1]  + "\n";
-                        states.add(line.split("Subhajit Sidhanta todebugstring:")[1]);
-                        flag = true;
+                        flag=false;
+                        //break;
                     }    
                 }
-                else if(flag)// && line.trim().toUpperCase().contains("RDD"))
-                    states.add(line);//str = str + "\n";
+                else
+                {        
+                    if(flag)// && line.trim().toUpperCase().contains("RDD"))
+                        states.add(line);//str = str + "\n";
+                }
             }
            Collections.reverse(states);
+           for (String state : states)
+            System.out.println("****state:"+state+"\n");
            if(states.size()>0)
            {
            for (String state : states) {
@@ -91,14 +101,14 @@ public class SparkRDDAnalyze {
                             if(!"".equalsIgnoreCase(state1) && state1.contains(" at ") && state1.split(" at ")[1].contains(" at "))
                                 actionnext = state1.split(" at ")[1].split(" at ")[0];
                             
-                            if(!"".equalsIgnoreCase(rddnext) && rddnext.contains("RDD[") && rddnext.contains("]") && !"".equalsIgnoreCase(rdd.split("RDD\\[")[1].split("]")[0].trim()))
+                            if(rddnext!= null && !"".equalsIgnoreCase(rddnext) && rddnext.contains("RDD[") && rddnext.contains("]"))// && !"".equalsIgnoreCase(rdd.split("RDD\\[")[1].split("]")[0].trim()))
                                 index1 = Integer.parseInt(rddnext.split("RDD\\[")[1].split("\\]")[0].trim());
                             
                             //System.out.println("***index1 vaue is: "+index1 +" index: "+ index);
                             if(index1>index && index1 > statenum)
                             {
                                 //System.out.println("***rddnext vaue is: "+rddnext +" index1: "+ index1);
-                                if(!rdd.equalsIgnoreCase(rddnext) && !action.equalsIgnoreCase(actionnext))
+                                if(rddnext!= null && actionnext!= null && !rdd.equalsIgnoreCase(rddnext) && !action.equalsIgnoreCase(actionnext))
                                 {
                                     dest=index1;
                                     break;
